@@ -2,6 +2,7 @@ package cn.ppphuang.netty.simple;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -30,7 +31,13 @@ public class NettyServer {
 
             //绑定端口并同步
             ChannelFuture cf = serverBootstrap.bind(6668).sync();
-
+            cf.addListener((ChannelFutureListener) channelFuture -> {
+                if (cf.isSuccess()) {
+                    System.out.println("success listen 6668");
+                } else {
+                    System.out.println("field listen 6668");
+                }
+            });
             cf.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
