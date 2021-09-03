@@ -40,7 +40,7 @@ public class Server {
                             pipeline.addLast(new HttpObjectAggregator(8192));
                             // WebSocketServerProtocolHandler HTTP升级WS协议
                             pipeline.addLast(new WebSocketServerProtocolHandler("/hello"));
-                            pipeline.addLast(null);
+                            pipeline.addLast(new MyTextWebSocketFrameHandler());
                         }
                     });
             ChannelFuture sync = serverBootstrap.bind(8000).sync();
