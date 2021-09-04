@@ -1,5 +1,6 @@
-package cn.ppphuang.netty.websocket;
+package cn.ppphuang.netty.inboundhandlerandoutboundhandler;
 
+import cn.ppphuang.netty.websocket.MyTextWebSocketFrameHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -22,20 +23,8 @@ public class Server {
         try {
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            ChannelPipeline pipeline = socketChannel.pipeline();
-                            pipeline.addLast(new HttpServerCodec());
-                            pipeline.addLast(new ChunkedWriteHandler());
-                            //http数据在传输过程中是分段的，HttpObjectAggregator 可以将多个段聚合
-                            pipeline.addLast(new HttpObjectAggregator(8192));
-                            // WebSocketServerProtocolHandler HTTP升级WS协议 101状态码
-                            pipeline.addLast(new WebSocketServerProtocolHandler("/hello"));
-                            pipeline.addLast(new MyTextWebSocketFrameHandler());
-                        }
-                    });
+                    .childHandler(new MyServerinitializer());
+
             ChannelFuture sync = serverBootstrap.bind(8000).sync();
             sync.channel().closeFuture().sync();
         } finally {
