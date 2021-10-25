@@ -1,4 +1,4 @@
-package cn.ppphuang.bio;
+package cn.ppphuang.netty.codec;
 
 
 import io.netty.buffer.ByteBuf;
@@ -11,7 +11,8 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("client" + ctx);
-        ctx.writeAndFlush(Unpooled.copiedBuffer("hello server", CharsetUtil.UTF_8));
+        StudentPOJO.Student zhangsan = StudentPOJO.Student.newBuilder().setId(4).setName("zhangsan").build();
+        ctx.writeAndFlush(zhangsan);
     }
 
     @Override
