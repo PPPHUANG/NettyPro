@@ -12,7 +12,8 @@ public class Client {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(eventExecutors).channel(NioSocketChannel.class)
 //                    .handler(new MyClientInitializer());会粘包
-                    .handler(new MyClientInitializer02());
+//                    .handler(new MyClientInitializer02());自定义编码器
+                    .handler(new MyClientInitializer03());
             ChannelFuture sync = bootstrap.connect("127.0.0.1", 8000).sync();
             sync.channel().closeFuture().sync();
         } catch (InterruptedException e) {

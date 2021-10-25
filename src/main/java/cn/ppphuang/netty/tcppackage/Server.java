@@ -13,8 +13,9 @@ public class Server {
         try {
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-//                    .childHandler(new MyServerinitializer()); 会粘包
-                    .childHandler(new MyServerinitializer02());
+//                    .childHandler(new MyServerinitializer()); //会粘包
+//                    .childHandler(new MyServerinitializer02());自定义编码器
+                    .childHandler(new MyServerinitializer03());
 
             ChannelFuture sync = serverBootstrap.bind(8000).sync();
             sync.channel().closeFuture().sync();
